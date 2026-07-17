@@ -25,14 +25,13 @@ import {
   FACEBOOK_URL,
   INSTAGRAM_URL,
   PHONE_DISPLAY,
-  SERVICES,
   WHATSAPP_NUMBER,
   buildWhatsAppUrl,
   type ServiceKey,
 } from "@/lib/booking";
 
-import heroImg from "@/assets/hero-barber.jpg";
-import interiorImg from "@/assets/nosotros-interior.jpg";
+// Placeholder logo — swap src/assets/logo.svg with the real Roma Barber Club logo file.
+import logoSrc from "@/assets/logo.svg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -72,8 +71,8 @@ export const Route = createFileRoute("/")({
 });
 
 const NAV = [
-  { href: "#servicios", label: "Servicios" },
   { href: "#nosotros", label: "Nosotros" },
+  { href: "#galeria", label: "Galería" },
   { href: "#resenas", label: "Reseñas" },
   { href: "#ubicacion", label: "Ubicación" },
   { href: "#reservar", label: "Reservar" },
@@ -109,6 +108,15 @@ const VALUE_PROPS = [
   { icon: Leaf, title: "Cuidado de piel y cabello", text: "Productos y consejos para vos." },
 ];
 
+const GALLERY_SLOTS = [
+  { file: "gallery-1.jpg", label: "Corte 01" },
+  { file: "gallery-2.jpg", label: "Corte 02" },
+  { file: "gallery-3.jpg", label: "Barba 01" },
+  { file: "gallery-4.jpg", label: "Ambiente 01" },
+  { file: "gallery-5.jpg", label: "Corte 03" },
+  { file: "gallery-6.jpg", label: "Barba 02" },
+];
+
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [preselect, setPreselect] = useState<ServiceKey | null>(null);
@@ -131,7 +139,6 @@ function Index() {
       <main>
         <Hero onReservar={() => scrollToBooking()} />
         <ValueProps />
-        <Services onReservar={scrollToBooking} />
         <Nosotros />
         <Galeria />
         <Resenas />
@@ -169,13 +176,20 @@ function Header({
     <header
       className={`sticky top-0 z-40 w-full border-b transition-colors ${
         scrolled
-          ? "border-border bg-white/85 backdrop-blur"
-          : "border-transparent bg-white/60 backdrop-blur"
+          ? "border-border bg-white/90 backdrop-blur"
+          : "border-transparent bg-white/70 backdrop-blur"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="#top" className="wordmark text-sm sm:text-base">
-          Roma <span className="text-primary">Barber</span> Club
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <a href="#top" className="flex items-center gap-3">
+          <img
+            src={logoSrc}
+            alt="Roma Barber Club"
+            className="h-12 w-12 rounded-md sm:h-14 sm:w-14"
+          />
+          <span className="wordmark hidden text-sm text-ink sm:inline">
+            Roma <span className="text-primary">Barber</span> Club
+          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -233,16 +247,32 @@ function Header({
 
 function Hero({ onReservar }: { onReservar: () => void }) {
   return (
-    <section id="top" className="relative isolate overflow-hidden bg-ink text-white">
-      <div className="absolute inset-0">
-        <img
-          src={heroImg}
-          alt="Barbero de Roma Barber Club haciendo un corte"
-          width={1600}
-          height={1808}
-          className="h-full w-full object-cover object-center opacity-55"
+    <section
+      id="top"
+      className="relative isolate overflow-hidden bg-ink text-white"
+      data-photo-slot="hero-bg-barbershop.jpg"
+    >
+      {/* Placeholder for hero background — swap with real photo: hero-bg-barbershop.jpg */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            "radial-gradient(1200px 600px at 20% 20%, rgba(198,161,91,0.18), transparent 60%), radial-gradient(900px 500px at 80% 80%, rgba(255,255,255,0.06), transparent 60%)",
+        }}
+      >
+        <div
+          className="absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, #fff 0 1px, transparent 1px 14px)",
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/70 to-ink/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/40" />
+      </div>
+
+      <div className="absolute right-4 top-4 z-10 rounded-md border border-white/10 bg-black/40 px-2 py-1 text-[10px] uppercase tracking-widest text-white/40 sm:right-6">
+        hero-bg-barbershop.jpg
       </div>
 
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
@@ -277,7 +307,7 @@ function Hero({ onReservar }: { onReservar: () => void }) {
               size="lg"
               className="h-12 border-white/20 bg-transparent px-6 text-base text-white hover:bg-white/10 hover:text-white"
             >
-              <a href="#servicios">Ver servicios</a>
+              <a href="#nosotros">Conocenos</a>
             </Button>
           </div>
         </div>
@@ -296,51 +326,12 @@ function ValueProps() {
         <div ref={ref} className="reveal grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {VALUE_PROPS.map(({ icon: Icon, title, text }) => (
             <div key={title} className="flex flex-col">
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-ink text-white">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-ink text-primary">
                 <Icon className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <h3 className="mt-5 text-lg font-semibold">{title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{text}</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------------- Services ---------------- */
-
-function Services({ onReservar }: { onReservar: (s: ServiceKey) => void }) {
-  const ref = useReveal<HTMLDivElement>();
-  return (
-    <section id="servicios" className="section-pad bg-surface-muted">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Servicios"
-          title="Elegí tu estilo."
-          subtitle="Precios claros. Turnos rápidos. Reservá el que quieras."
-        />
-
-        <div ref={ref} className="reveal mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s) => (
-            <article
-              key={s.key}
-              className="group flex flex-col rounded-2xl border border-border bg-white p-6 transition-all hover:-translate-y-1 hover:border-ink hover:shadow-lg"
-            >
-              <h3 className="text-xl font-semibold tracking-tight">{s.name}</h3>
-              <p className="mt-2 flex-1 text-sm text-muted-foreground">{s.description}</p>
-              <div className="mt-6 flex items-baseline justify-between">
-                <span className="text-lg font-bold">{s.priceLabel}</span>
-              </div>
-              <Button
-                onClick={() => onReservar(s.key)}
-                variant="outline"
-                className="mt-4 h-11 w-full border-ink text-ink hover:bg-ink hover:text-white"
-              >
-                Reservar
-              </Button>
-            </article>
           ))}
         </div>
       </div>
@@ -354,15 +345,19 @@ function Nosotros() {
   const ref = useReveal<HTMLDivElement>();
   return (
     <section id="nosotros" className="section-pad bg-white">
-      <div ref={ref} className="reveal mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      <div
+        ref={ref}
+        className="reveal mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8"
+      >
         <div>
-          <SectionHeader eyebrow="Nosotros" title="Barbería moderna en Las Heras." align="left" />
+          <SectionHeader
+            eyebrow="Nosotros"
+            title="Una barbería moderna, para tu estilo."
+            align="left"
+          />
           <div className="mt-6 space-y-4 text-base text-muted-foreground sm:text-lg">
             <p>
-              En Roma Barber Club combinamos técnica, estilo y buena onda. Un espacio pensado para que te sientas cómodo mientras te ponemos a punto.
-            </p>
-            <p>
-              Trabajamos con productos que cuidan tu piel y tu pelo. Cada corte se piensa para vos: forma, textura y detalle, sin apuro.
+              Roma Barber Club es una barbería pensada para los pibes de hoy. Cortes actuales, fades bien definidos, barba prolija y la onda que buscás. Un espacio relajado, con buena música y mejor atención, donde cada corte se hace a tu medida. Vení, relajate y salí con la mejor versión de tu estilo.
             </p>
           </div>
           <div className="mt-8 flex flex-wrap gap-6">
@@ -372,16 +367,11 @@ function Nosotros() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl">
-          <img
-            src={interiorImg}
-            alt="Interior de Roma Barber Club"
-            width={1408}
-            height={1200}
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-        </div>
+        <PhotoSlot
+          filename="nosotros-interior.jpg"
+          label="Interior de la barbería"
+          className="aspect-[4/5] w-full"
+        />
       </div>
     </section>
   );
@@ -390,7 +380,7 @@ function Nosotros() {
 function Stat({ number, label }: { number: string; label: string }) {
   return (
     <div>
-      <div className="text-3xl font-bold tracking-tight">{number}</div>
+      <div className="text-3xl font-bold tracking-tight text-primary">{number}</div>
       <div className="text-sm text-muted-foreground">{label}</div>
     </div>
   );
@@ -400,16 +390,8 @@ function Stat({ number, label }: { number: string; label: string }) {
 
 function Galeria() {
   const ref = useReveal<HTMLDivElement>();
-  const slots = [
-    "Corte 01",
-    "Corte 02",
-    "Barba 01",
-    "Ambiente 01",
-    "Corte 03",
-    "Barba 02",
-  ];
   return (
-    <section className="section-pad bg-ink text-white">
+    <section id="galeria" className="section-pad bg-ink text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeader
@@ -430,21 +412,14 @@ function Galeria() {
         </div>
 
         <div ref={ref} className="reveal mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {slots.map((label, i) => (
-            <div
-              key={i}
-              data-photo-slot={label}
-              className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-white/5"
-            >
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="text-xs uppercase tracking-widest text-white/40">
-                  {label}
-                </span>
-              </div>
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100">
-                <div className="absolute inset-0 bg-primary/10" />
-              </div>
-            </div>
+          {GALLERY_SLOTS.map((s) => (
+            <PhotoSlot
+              key={s.file}
+              filename={s.file}
+              label={s.label}
+              variant="dark"
+              className="aspect-square"
+            />
           ))}
         </div>
         <p className="mt-4 text-xs text-white/40">
@@ -503,12 +478,12 @@ function CtaStrip({ onReservar }: { onReservar: () => void }) {
     <section className="bg-primary text-primary-foreground">
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-14 sm:flex-row sm:items-center sm:px-6 lg:px-8">
         <h3 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Listo para tu próximo corte?
+          ¿Listo para tu próximo corte?
         </h3>
         <Button
           onClick={onReservar}
           size="lg"
-          className="h-12 bg-white px-6 text-base text-primary hover:bg-white/90"
+          className="h-12 bg-ink px-6 text-base text-white hover:bg-ink/90"
         >
           Reservá tu turno
           <ArrowRight className="h-4 w-4" />
@@ -534,7 +509,7 @@ function Ubicacion() {
 
           <ul className="mt-8 space-y-6">
             <li className="flex gap-4">
-              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-white">
+              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-primary">
                 <MapPin className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <div>
@@ -543,7 +518,7 @@ function Ubicacion() {
               </div>
             </li>
             <li className="flex gap-4">
-              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-white">
+              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-primary">
                 <Clock className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <div>
@@ -552,7 +527,7 @@ function Ubicacion() {
               </div>
             </li>
             <li className="flex gap-4">
-              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-white">
+              <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-primary">
                 <Phone className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <div>
@@ -598,7 +573,7 @@ function Reservar({
         <SectionHeader
           eyebrow="Reservá"
           title="Reservá tu turno"
-          subtitle="Elegí servicio, día y hora. Confirmamos por WhatsApp en el momento."
+          subtitle="Elegí día y hora. Confirmamos por WhatsApp en el momento."
           invert
         />
         <div className="mt-10 text-foreground">
@@ -620,10 +595,17 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="wordmark text-base text-white">
-              Roma <span className="text-primary">Barber</span> Club
+            <div className="flex items-center gap-3">
+              <img
+                src={logoSrc}
+                alt="Roma Barber Club"
+                className="h-12 w-12 rounded-md"
+              />
+              <div className="wordmark text-base text-white">
+                Roma <span className="text-primary">Barber</span> Club
+              </div>
             </div>
-            <p className="mt-3 max-w-sm text-sm">
+            <p className="mt-4 max-w-sm text-sm">
               Barbería moderna en Las Heras, Mendoza. Cortes, barba y cuidado para vos.
             </p>
             <div className="mt-5 flex gap-3">
@@ -686,7 +668,7 @@ function SocialLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/15 text-white transition-colors hover:border-primary hover:bg-primary hover:text-white"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-white/15 text-white transition-colors hover:border-primary hover:bg-primary hover:text-ink"
     >
       {children}
     </a>
@@ -705,7 +687,7 @@ function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chatear por WhatsApp"
-      className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-primary/30 transition-transform hover:scale-105"
+      className="fixed bottom-5 right-5 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary text-ink shadow-lg shadow-primary/30 transition-transform hover:scale-105"
       data-whatsapp={WHATSAPP_NUMBER}
     >
       <MessageCircle className="h-6 w-6" />
@@ -714,6 +696,48 @@ function FloatingWhatsApp() {
 }
 
 /* ---------------- Shared bits ---------------- */
+
+function PhotoSlot({
+  filename,
+  label,
+  className = "",
+  variant = "light",
+}: {
+  filename: string;
+  label: string;
+  className?: string;
+  variant?: "light" | "dark";
+}) {
+  const isDark = variant === "dark";
+  return (
+    <div
+      data-photo-slot={filename}
+      className={`group relative overflow-hidden rounded-2xl border ${
+        isDark ? "border-white/10 bg-white/5" : "border-border bg-surface-muted"
+      } ${className}`}
+    >
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center">
+        <span
+          className={`text-[10px] uppercase tracking-[0.25em] ${
+            isDark ? "text-white/40" : "text-muted-foreground"
+          }`}
+        >
+          {label}
+        </span>
+        <span
+          className={`text-[10px] font-mono ${
+            isDark ? "text-white/25" : "text-muted-foreground/60"
+          }`}
+        >
+          {filename}
+        </span>
+      </div>
+      <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="absolute inset-0 bg-primary/10" />
+      </div>
+    </div>
+  );
+}
 
 function SectionHeader({
   eyebrow,
@@ -732,11 +756,7 @@ function SectionHeader({
   return (
     <div className={`max-w-2xl ${alignCls}`}>
       {eyebrow && (
-        <div
-          className={`text-xs font-semibold uppercase tracking-[0.2em] ${
-            invert ? "text-primary" : "text-primary"
-          }`}
-        >
+        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
           {eyebrow}
         </div>
       )}
