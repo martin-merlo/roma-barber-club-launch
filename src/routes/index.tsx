@@ -536,7 +536,7 @@ function Ubicacion() {
                 <div className="text-sm font-medium text-muted-foreground">Teléfono</div>
                 <a
                   href={`tel:${PHONE_DISPLAY.replace(/\s|-/g, "")}`}
-                  className="mt-0.5 block text-base font-semibold hover:text-primary"
+                  className="mt-0.5 block text-base font-semibold hover:text-ink hover:underline"
                 >
                   {PHONE_DISPLAY}
                 </a>
