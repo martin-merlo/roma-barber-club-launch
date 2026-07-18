@@ -188,7 +188,7 @@ function Header({
             className="h-12 w-12 rounded-md sm:h-14 sm:w-14"
           />
           <span className="wordmark hidden text-sm text-ink sm:inline">
-            Roma <span className="text-primary">Barber</span> Club
+            Roma Barber Club
           </span>
         </a>
 
