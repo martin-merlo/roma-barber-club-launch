@@ -345,7 +345,7 @@ function Nosotros() {
 
   return (
     <section id="nosotros" className="section-pad bg-white">
-      <div ref={ref} className="reveal mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
+      <div ref={ref} className="reveal mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 lg:px-8">
         <div>
           <SectionHeader eyebrow="Nosotros" title="Barbería moderna en Las Heras." align="left" />
           <div className="mt-6 space-y-4 text-base text-muted-foreground sm:text-lg">
@@ -363,7 +363,7 @@ function Nosotros() {
           </div>
         </div>
 
-        <div className="flex justify-center lg:justify-end">
+        <div className="flex justify-center">
           <div className="relative aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-2xl bg-ink sm:max-w-[340px]">
             <video
               ref={videoRef}
