@@ -187,8 +187,8 @@ function Header({
             alt="Roma Barber Club"
             className="h-12 w-12 rounded-md sm:h-14 sm:w-14"
           />
-          <span className="wordmark hidden text-sm text-ink sm:inline">
-            Roma Barber Club
+          <span className="wordmark hidden items-center gap-1 rounded-md bg-ink px-3 py-1 text-sm text-white sm:inline">
+            Roma <span className="text-primary">Barber</span> Club
           </span>
         </a>
 
