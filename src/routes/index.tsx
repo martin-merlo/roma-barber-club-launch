@@ -25,7 +25,6 @@ import {
   FACEBOOK_URL,
   INSTAGRAM_URL,
   PHONE_DISPLAY,
-  SERVICES,
   WHATSAPP_NUMBER,
   buildWhatsAppUrl,
   type ServiceKey,
@@ -33,6 +32,13 @@ import {
 
 import heroImg from "@/assets/hero-barber.jpg";
 import interiorImg from "@/assets/nosotros-interior.jpg";
+import logoBlack from "@/assets/Logo_Black.png";
+import corte1 from "@/assets/Corte1.png";
+import corte2 from "@/assets/Corte2.png";
+import corte3 from "@/assets/Corte3.png";
+import corte4 from "@/assets/Corte4.png";
+import peluquero1 from "@/assets/Peluquero1.png";
+import peluquero2 from "@/assets/Peluquero2.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -72,7 +78,6 @@ export const Route = createFileRoute("/")({
 });
 
 const NAV = [
-  { href: "#servicios", label: "Servicios" },
   { href: "#nosotros", label: "Nosotros" },
   { href: "#resenas", label: "Reseñas" },
   { href: "#ubicacion", label: "Ubicación" },
@@ -131,7 +136,6 @@ function Index() {
       <main>
         <Hero onReservar={() => scrollToBooking()} />
         <ValueProps />
-        <Services onReservar={scrollToBooking} />
         <Nosotros />
         <Galeria />
         <Resenas />
@@ -174,8 +178,15 @@ function Header({
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a href="#top" className="wordmark text-sm sm:text-base">
-          Roma <span className="text-primary">Barber</span> Club
+        <a href="#top" className="flex items-center gap-2 sm:gap-3">
+          <img
+            src={logoBlack}
+            alt="Roma Barber Club"
+            className="h-9 w-auto sm:h-10"
+          />
+          <span className="wordmark text-sm sm:text-base">
+            Roma <span className="text-primary">Barber</span> Club
+          </span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -277,7 +288,7 @@ function Hero({ onReservar }: { onReservar: () => void }) {
               size="lg"
               className="h-12 border-white/20 bg-transparent px-6 text-base text-white hover:bg-white/10 hover:text-white"
             >
-              <a href="#servicios">Ver servicios</a>
+              <a href="#galeria">Ver galería</a>
             </Button>
           </div>
         </div>
@@ -302,45 +313,6 @@ function ValueProps() {
               <h3 className="mt-5 text-lg font-semibold">{title}</h3>
               <p className="mt-1 text-sm text-muted-foreground">{text}</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------------- Services ---------------- */
-
-function Services({ onReservar }: { onReservar: (s: ServiceKey) => void }) {
-  const ref = useReveal<HTMLDivElement>();
-  return (
-    <section id="servicios" className="section-pad bg-surface-muted">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeader
-          eyebrow="Servicios"
-          title="Elegí tu estilo."
-          subtitle="Precios claros. Turnos rápidos. Reservá el que quieras."
-        />
-
-        <div ref={ref} className="reveal mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {SERVICES.map((s) => (
-            <article
-              key={s.key}
-              className="group flex flex-col rounded-2xl border border-border bg-white p-6 transition-all hover:-translate-y-1 hover:border-ink hover:shadow-lg"
-            >
-              <h3 className="text-xl font-semibold tracking-tight">{s.name}</h3>
-              <p className="mt-2 flex-1 text-sm text-muted-foreground">{s.description}</p>
-              <div className="mt-6 flex items-baseline justify-between">
-                <span className="text-lg font-bold">{s.priceLabel}</span>
-              </div>
-              <Button
-                onClick={() => onReservar(s.key)}
-                variant="outline"
-                className="mt-4 h-11 w-full border-ink text-ink hover:bg-ink hover:text-white"
-              >
-                Reservar
-              </Button>
-            </article>
           ))}
         </div>
       </div>
@@ -398,18 +370,19 @@ function Stat({ number, label }: { number: string; label: string }) {
 
 /* ---------------- Galería ---------------- */
 
+const GALLERY = [
+  { src: corte1, alt: "Corte realizado en Roma Barber Club" },
+  { src: corte2, alt: "Corte realizado en Roma Barber Club" },
+  { src: peluquero1, alt: "Peluquero de Roma Barber Club trabajando" },
+  { src: corte3, alt: "Corte realizado en Roma Barber Club" },
+  { src: peluquero2, alt: "Peluquero de Roma Barber Club trabajando" },
+  { src: corte4, alt: "Corte realizado en Roma Barber Club" },
+];
+
 function Galeria() {
   const ref = useReveal<HTMLDivElement>();
-  const slots = [
-    "Corte 01",
-    "Corte 02",
-    "Barba 01",
-    "Ambiente 01",
-    "Corte 03",
-    "Barba 02",
-  ];
   return (
-    <section className="section-pad bg-ink text-white">
+    <section id="galeria" className="section-pad bg-ink text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeader
@@ -430,26 +403,23 @@ function Galeria() {
         </div>
 
         <div ref={ref} className="reveal mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-          {slots.map((label, i) => (
+          {GALLERY.map((photo, i) => (
             <div
               key={i}
-              data-photo-slot={label}
               className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-white/5"
             >
-              <div className="flex h-full w-full items-center justify-center">
-                <span className="text-xs uppercase tracking-widest text-white/40">
-                  {label}
-                </span>
-              </div>
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
               <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity group-hover:opacity-100">
                 <div className="absolute inset-0 bg-primary/10" />
               </div>
             </div>
           ))}
         </div>
-        <p className="mt-4 text-xs text-white/40">
-          Espacios listos para reemplazar por fotos reales.
-        </p>
       </div>
     </section>
   );
