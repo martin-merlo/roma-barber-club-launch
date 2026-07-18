@@ -605,7 +605,7 @@ function Ubicacion() {
         <div className="relative overflow-hidden rounded-2xl border border-border bg-white">
           <iframe
             title="Mapa de Roma Barber Club"
-            src="https://www.google.com/maps?q=Las+Heras,+Mendoza,+Argentina&output=embed"
+            src="https://www.google.com/maps?q=Roma+Barber+Club&ll=-32.8429838,-68.8480019&z=16&output=embed"
             className="h-[420px] w-full"
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
