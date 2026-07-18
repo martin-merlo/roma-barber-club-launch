@@ -756,7 +756,11 @@ function SectionHeader({
   return (
     <div className={`max-w-2xl ${alignCls}`}>
       {eyebrow && (
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+        <div
+          className={`text-xs font-semibold uppercase tracking-[0.2em] ${
+            invert ? "text-primary" : "inline-block rounded-md bg-ink px-3 py-1 text-primary"
+          }`}
+        >
           {eyebrow}
         </div>
       )}
