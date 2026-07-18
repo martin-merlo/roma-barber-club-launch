@@ -187,7 +187,7 @@ function Header({
             alt="Roma Barber Club"
             className="h-12 w-12 rounded-md sm:h-14 sm:w-14"
           />
-          <span className="wordmark hidden text-sm text-ink sm:inline">
+          <span className="wordmark hidden items-center gap-1 rounded-md bg-ink px-3 py-1 text-sm text-white sm:inline">
             Roma <span className="text-primary">Barber</span> Club
           </span>
         </a>
@@ -258,7 +258,7 @@ function Hero({ onReservar }: { onReservar: () => void }) {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(1200px 600px at 20% 20%, rgba(198,161,91,0.18), transparent 60%), radial-gradient(900px 500px at 80% 80%, rgba(255,255,255,0.06), transparent 60%)",
+            "radial-gradient(1200px 600px at 20% 20%, rgba(255,215,0,0.18), transparent 60%), radial-gradient(900px 500px at 80% 80%, rgba(255,255,255,0.06), transparent 60%)",
         }}
       >
         <div
@@ -380,8 +380,10 @@ function Nosotros() {
 function Stat({ number, label }: { number: string; label: string }) {
   return (
     <div>
-      <div className="text-3xl font-bold tracking-tight text-primary">{number}</div>
-      <div className="text-sm text-muted-foreground">{label}</div>
+      <div className="inline-flex min-w-[3.5rem] items-center justify-center rounded-lg bg-ink px-3 py-1.5 text-3xl font-bold tracking-tight text-primary">
+        {number}
+      </div>
+      <div className="mt-1 text-sm text-muted-foreground">{label}</div>
     </div>
   );
 }
@@ -475,7 +477,7 @@ function Resenas() {
 
 function CtaStrip({ onReservar }: { onReservar: () => void }) {
   return (
-    <section className="bg-primary text-primary-foreground">
+    <section className="bg-ink text-white">
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-14 sm:flex-row sm:items-center sm:px-6 lg:px-8">
         <h3 className="text-3xl font-bold tracking-tight sm:text-4xl">
           ¿Listo para tu próximo corte?
@@ -483,7 +485,7 @@ function CtaStrip({ onReservar }: { onReservar: () => void }) {
         <Button
           onClick={onReservar}
           size="lg"
-          className="h-12 bg-ink px-6 text-base text-white hover:bg-ink/90"
+          className="h-12 bg-primary px-6 text-base text-primary-foreground hover:bg-primary/90"
         >
           Reservá tu turno
           <ArrowRight className="h-4 w-4" />
@@ -534,7 +536,7 @@ function Ubicacion() {
                 <div className="text-sm font-medium text-muted-foreground">Teléfono</div>
                 <a
                   href={`tel:${PHONE_DISPLAY.replace(/\s|-/g, "")}`}
-                  className="mt-0.5 block text-base font-semibold hover:text-primary"
+                  className="mt-0.5 block text-base font-semibold hover:text-ink hover:underline"
                 >
                   {PHONE_DISPLAY}
                 </a>
@@ -756,7 +758,11 @@ function SectionHeader({
   return (
     <div className={`max-w-2xl ${alignCls}`}>
       {eyebrow && (
-        <div className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+        <div
+          className={`text-xs font-semibold uppercase tracking-[0.2em] ${
+            invert ? "text-primary" : "inline-block rounded-md bg-ink px-3 py-1 text-primary"
+          }`}
+        >
           {eyebrow}
         </div>
       )}
