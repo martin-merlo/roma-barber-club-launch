@@ -25,9 +25,9 @@ import {
   FACEBOOK_URL,
   INSTAGRAM_URL,
   PHONE_DISPLAY,
+  SCHEDULE_LINES,
   WHATSAPP_NUMBER,
   buildWhatsAppUrl,
-  type ServiceKey,
 } from "@/lib/booking";
 
 import heroImg from "@/assets/hero-barber.jpg";
@@ -60,7 +60,11 @@ export const Route = createFileRoute("/")({
           },
           telephone: "+54 261 708-4435",
           priceRange: "$$",
-          openingHours: "Mo-Sa 10:00-21:00",
+          openingHours: [
+            "Tu-Th 10:00-14:00",
+            "Tu-Th 17:00-21:00",
+            "Fr-Sa 10:00-21:00",
+          ],
           aggregateRating: {
             "@type": "AggregateRating",
             ratingValue: "5.0",
@@ -116,10 +120,8 @@ const VALUE_PROPS = [
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [preselect, setPreselect] = useState<ServiceKey | null>(null);
 
-  const scrollToBooking = useCallback((service?: ServiceKey) => {
-    if (service) setPreselect(service);
+  const scrollToBooking = useCallback(() => {
     setMenuOpen(false);
     const el = document.getElementById("reservar");
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -141,7 +143,7 @@ function Index() {
         <Resenas />
         <CtaStrip onReservar={() => scrollToBooking()} />
         <Ubicacion />
-        <Reservar preselect={preselect} onConsumed={() => setPreselect(null)} />
+        <Reservar />
       </main>
 
       <Footer />
@@ -182,7 +184,7 @@ function Header({
           <img
             src={logoBlack}
             alt="Roma Barber Club"
-            className="h-9 w-auto sm:h-10"
+            className="h-12 w-auto sm:h-14"
           />
           <span className="wordmark text-sm sm:text-base">
             Roma <span className="text-primary">Barber</span> Club
@@ -517,8 +519,12 @@ function Ubicacion() {
                 <Clock className="h-5 w-5" strokeWidth={1.75} />
               </div>
               <div>
-                <div className="text-sm font-medium text-muted-foreground">Horario</div>
-                <div className="mt-0.5 text-base font-semibold">Abierto hasta las 21:00</div>
+                <div className="text-sm font-medium text-muted-foreground">Horarios</div>
+                <div className="mt-0.5 space-y-0.5 text-base font-semibold">
+                  {SCHEDULE_LINES.map((line) => (
+                    <div key={line}>{line}</div>
+                  ))}
+                </div>
               </div>
             </li>
             <li className="flex gap-4">
@@ -554,13 +560,7 @@ function Ubicacion() {
 
 /* ---------------- Reservar ---------------- */
 
-function Reservar({
-  preselect,
-  onConsumed,
-}: {
-  preselect: ServiceKey | null;
-  onConsumed: () => void;
-}) {
+function Reservar() {
   const ref = useReveal<HTMLDivElement>();
   return (
     <section id="reservar" className="section-pad bg-ink text-white">
@@ -568,14 +568,11 @@ function Reservar({
         <SectionHeader
           eyebrow="Reservá"
           title="Reservá tu turno"
-          subtitle="Elegí servicio, día y hora. Confirmamos por WhatsApp en el momento."
+          subtitle="Elegí día y hora. Confirmamos por WhatsApp en el momento."
           invert
         />
         <div className="mt-10 text-foreground">
-          <BookingForm
-            preselectedService={preselect}
-            onPreselectConsumed={onConsumed}
-          />
+          <BookingForm />
         </div>
       </div>
     </section>
@@ -628,7 +625,9 @@ function Footer() {
                   {PHONE_DISPLAY}
                 </a>
               </li>
-              <li>Abierto hasta las 21:00</li>
+              {SCHEDULE_LINES.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
             </ul>
           </div>
         </div>

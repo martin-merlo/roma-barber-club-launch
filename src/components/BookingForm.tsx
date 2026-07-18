@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Check, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,30 +11,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  SERVICES,
   buildWhatsAppUrl,
-  type ServiceKey,
+  getTimeSlots,
+  isClosedDay,
 } from "@/lib/booking";
 
-const TIME_SLOTS = (() => {
-  const out: string[] = [];
-  for (let h = 10; h <= 20; h++) {
-    out.push(`${String(h).padStart(2, "0")}:00`);
-    out.push(`${String(h).padStart(2, "0")}:30`);
-  }
-  out.push("21:00");
-  return out;
-})();
+type Errors = Partial<Record<"fecha" | "hora" | "nombre" | "telefono", string>>;
 
-type Props = {
-  preselectedService?: ServiceKey | null;
-  onPreselectConsumed?: () => void;
-};
-
-type Errors = Partial<Record<"servicio" | "fecha" | "hora" | "nombre" | "telefono", string>>;
-
-export function BookingForm({ preselectedService, onPreselectConsumed }: Props) {
-  const [servicio, setServicio] = useState<ServiceKey | "">("");
+export function BookingForm() {
   const [fecha, setFecha] = useState("");
   const [hora, setHora] = useState("");
   const [nombre, setNombre] = useState("");
@@ -42,20 +26,31 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
 
-  useEffect(() => {
-    if (preselectedService) {
-      setServicio(preselectedService);
-      onPreselectConsumed?.();
-    }
-  }, [preselectedService, onPreselectConsumed]);
-
   const today = new Date().toISOString().split("T")[0];
+
+  const closed = fecha ? isClosedDay(fecha) : false;
+  const slots = useMemo(() => (fecha ? getTimeSlots(fecha) : []), [fecha]);
+
+  function handleFechaChange(value: string) {
+    setFecha(value);
+    // Si cambia el día, limpiamos la hora si ya no es válida para ese día.
+    const nextSlots = value ? getTimeSlots(value) : [];
+    if (!nextSlots.includes(hora)) setHora("");
+    setErrors((prev) => ({ ...prev, fecha: undefined, hora: undefined }));
+  }
 
   function validate(): boolean {
     const e: Errors = {};
-    if (!servicio) e.servicio = "Elegí un servicio";
-    if (!fecha) e.fecha = "Elegí una fecha";
-    if (!hora) e.hora = "Elegí un horario";
+    if (!fecha) {
+      e.fecha = "Elegí una fecha";
+    } else if (isClosedDay(fecha)) {
+      e.fecha = "Cerrado los domingos y lunes";
+    }
+    if (!fecha || isClosedDay(fecha)) {
+      // No pedimos hora si el día está cerrado.
+    } else if (!hora) {
+      e.hora = "Elegí un horario";
+    }
     if (!nombre.trim() || nombre.trim().length < 2) e.nombre = "Ingresá tu nombre";
     if (!telefono.trim() || telefono.replace(/\D/g, "").length < 6)
       e.telefono = "Ingresá un teléfono válido";
@@ -67,17 +62,12 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
     ev.preventDefault();
     if (!validate()) return;
 
-    const svc = SERVICES.find((s) => s.key === servicio);
     const [y, m, d] = fecha.split("-");
     const fechaFmt = `${d}/${m}/${y}`;
 
     const msg =
-      `¡Hola Roma Barber Club! Quiero reservar un turno.\n\n` +
-      `• Servicio: ${svc?.name ?? servicio}\n` +
-      `• Fecha: ${fechaFmt}\n` +
-      `• Hora: ${hora}\n` +
-      `• Nombre: ${nombre.trim()}\n` +
-      `• Teléfono: ${telefono.trim()}\n\n` +
+      `¡Hola Roma Barber Club! Quiero reservar un turno para el ${fechaFmt} ` +
+      `a las ${hora}. Mi nombre es ${nombre.trim()} y mi teléfono es ${telefono.trim()}. ` +
       `¿Me confirmás disponibilidad? ¡Gracias!`;
 
     window.open(buildWhatsAppUrl(msg), "_blank", "noopener,noreferrer");
@@ -86,7 +76,6 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
 
   function reset() {
     setSent(false);
-    setServicio("");
     setFecha("");
     setHora("");
     setNombre("");
@@ -123,30 +112,6 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
       className="rounded-2xl border border-border bg-white p-6 sm:p-10 shadow-sm"
     >
       <div className="grid gap-6 sm:grid-cols-2">
-        <div className="sm:col-span-2">
-          <Label htmlFor="servicio" className="mb-2 block text-sm font-medium">
-            Servicio
-          </Label>
-          <Select
-            value={servicio}
-            onValueChange={(v) => setServicio(v as ServiceKey)}
-          >
-            <SelectTrigger id="servicio" className="h-12 w-full">
-              <SelectValue placeholder="Elegí un servicio" />
-            </SelectTrigger>
-            <SelectContent>
-              {SERVICES.map((s) => (
-                <SelectItem key={s.key} value={s.key}>
-                  {s.name} — {s.priceLabel}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          {errors.servicio && (
-            <p className="mt-1 text-sm text-primary">{errors.servicio}</p>
-          )}
-        </div>
-
         <div>
           <Label htmlFor="fecha" className="mb-2 block text-sm font-medium">
             Fecha
@@ -156,7 +121,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
             type="date"
             min={today}
             value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
+            onChange={(e) => handleFechaChange(e.target.value)}
             className="h-12"
           />
           {errors.fecha && <p className="mt-1 text-sm text-primary">{errors.fecha}</p>}
@@ -166,19 +131,37 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
           <Label htmlFor="hora" className="mb-2 block text-sm font-medium">
             Hora
           </Label>
-          <Select value={hora} onValueChange={setHora}>
+          <Select
+            value={hora}
+            onValueChange={setHora}
+            disabled={!fecha || closed}
+          >
             <SelectTrigger id="hora" className="h-12 w-full">
-              <SelectValue placeholder="Elegí un horario" />
+              <SelectValue
+                placeholder={
+                  !fecha
+                    ? "Elegí primero una fecha"
+                    : closed
+                      ? "Cerrado ese día"
+                      : "Elegí un horario"
+                }
+              />
             </SelectTrigger>
             <SelectContent className="max-h-64">
-              {TIME_SLOTS.map((t) => (
+              {slots.map((t) => (
                 <SelectItem key={t} value={t}>
                   {t}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          {errors.hora && <p className="mt-1 text-sm text-primary">{errors.hora}</p>}
+          {closed ? (
+            <p className="mt-1 text-sm text-primary">
+              Cerrado los domingos y lunes. Elegí otro día.
+            </p>
+          ) : (
+            errors.hora && <p className="mt-1 text-sm text-primary">{errors.hora}</p>
+          )}
         </div>
 
         <div>
