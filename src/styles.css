@@ -50,21 +50,21 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
 
-  /* Warm gold/brass accent #C6A15B */
-  --primary: oklch(0.72 0.09 80);
-  --primary-foreground: oklch(0.145 0 0);
+  /* Bright gold accent #FFD700 */
+  --primary: #FFD700;
+  --primary-foreground: #0F0F0F;
 
   --secondary: oklch(0.972 0 0);
   --secondary-foreground: oklch(0.145 0 0);
   --muted: oklch(0.972 0 0);
   --muted-foreground: oklch(0.62 0.006 264);   /* #A1A1AA */
-  --accent: oklch(0.72 0.09 80);
-  --accent-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.577 0.221 27.5);
+  --accent: #FFD700;
+  --accent-foreground: #0F0F0F;
+  --destructive: oklch(0.145 0 0);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.92 0.002 264);
   --input: oklch(0.92 0.002 264);
-  --ring: oklch(0.72 0.09 80);
+  --ring: #FFD700;
 }
 
 @layer base {
