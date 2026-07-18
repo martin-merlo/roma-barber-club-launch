@@ -477,7 +477,7 @@ function Resenas() {
 
 function CtaStrip({ onReservar }: { onReservar: () => void }) {
   return (
-    <section className="bg-primary text-primary-foreground">
+    <section className="bg-ink text-white">
       <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-4 py-14 sm:flex-row sm:items-center sm:px-6 lg:px-8">
         <h3 className="text-3xl font-bold tracking-tight sm:text-4xl">
           ¿Listo para tu próximo corte?
@@ -485,7 +485,7 @@ function CtaStrip({ onReservar }: { onReservar: () => void }) {
         <Button
           onClick={onReservar}
           size="lg"
-          className="h-12 bg-ink px-6 text-base text-white hover:bg-ink/90"
+          className="h-12 bg-primary px-6 text-base text-primary-foreground hover:bg-primary/90"
         >
           Reservá tu turno
           <ArrowRight className="h-4 w-4" />
