@@ -258,7 +258,7 @@ function Hero({ onReservar }: { onReservar: () => void }) {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(1200px 600px at 20% 20%, rgba(198,161,91,0.18), transparent 60%), radial-gradient(900px 500px at 80% 80%, rgba(255,255,255,0.06), transparent 60%)",
+            "radial-gradient(1200px 600px at 20% 20%, rgba(255,215,0,0.18), transparent 60%), radial-gradient(900px 500px at 80% 80%, rgba(255,255,255,0.06), transparent 60%)",
         }}
       >
         <div
