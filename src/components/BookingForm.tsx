@@ -97,7 +97,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
   if (sent) {
     return (
       <div className="rounded-2xl border border-border bg-white p-8 sm:p-12 text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-ink text-primary">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
           <Check className="h-7 w-7" />
         </div>
         <h3 className="mt-6 text-2xl font-bold tracking-tight">¡Listo!</h3>
@@ -143,7 +143,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
             </SelectContent>
           </Select>
           {errors.servicio && (
-            <p className="mt-1 text-sm text-foreground">{errors.servicio}</p>
+            <p className="mt-1 text-sm text-primary">{errors.servicio}</p>
           )}
         </div>
 
@@ -159,7 +159,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
             onChange={(e) => setFecha(e.target.value)}
             className="h-12"
           />
-          {errors.fecha && <p className="mt-1 text-sm text-foreground">{errors.fecha}</p>}
+          {errors.fecha && <p className="mt-1 text-sm text-primary">{errors.fecha}</p>}
         </div>
 
         <div>
@@ -178,7 +178,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
               ))}
             </SelectContent>
           </Select>
-          {errors.hora && <p className="mt-1 text-sm text-foreground">{errors.hora}</p>}
+          {errors.hora && <p className="mt-1 text-sm text-primary">{errors.hora}</p>}
         </div>
 
         <div>
@@ -195,7 +195,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
             maxLength={80}
             className="h-12"
           />
-          {errors.nombre && <p className="mt-1 text-sm text-foreground">{errors.nombre}</p>}
+          {errors.nombre && <p className="mt-1 text-sm text-primary">{errors.nombre}</p>}
         </div>
 
         <div>
@@ -214,7 +214,7 @@ export function BookingForm({ preselectedService, onPreselectConsumed }: Props) 
             className="h-12"
           />
           {errors.telefono && (
-            <p className="mt-1 text-sm text-foreground">{errors.telefono}</p>
+            <p className="mt-1 text-sm text-primary">{errors.telefono}</p>
           )}
         </div>
       </div>
