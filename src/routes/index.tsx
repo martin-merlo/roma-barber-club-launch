@@ -31,8 +31,8 @@ import {
 } from "@/lib/booking";
 
 import heroImg from "@/assets/hero-barber.jpg";
-import interiorImg from "@/assets/nosotros-interior.jpg";
-import logoBlack from "@/assets/Logo_Black.png";
+import logoSvg from "@/assets/LogoSVG.svg";
+import nosotrosVideo from "@/assets/video.mp4";
 import corte1 from "@/assets/Corte1.png";
 import corte2 from "@/assets/Corte2.png";
 import corte3 from "@/assets/Corte3.png";
@@ -182,9 +182,9 @@ function Header({
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <a href="#top" className="flex items-center gap-2 sm:gap-3">
           <img
-            src={logoBlack}
+            src={logoSvg}
             alt="Roma Barber Club"
-            className="h-12 w-auto sm:h-14"
+            className="h-11 w-auto sm:h-14"
           />
           <span className="wordmark text-sm sm:text-base">
             Roma <span className="text-primary">Barber</span> Club
@@ -346,14 +346,16 @@ function Nosotros() {
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl">
-          <img
-            src={interiorImg}
-            alt="Interior de Roma Barber Club"
-            width={1408}
-            height={1200}
-            loading="lazy"
-            className="h-full w-full object-cover"
+        <div className="relative aspect-[1408/1200] overflow-hidden rounded-2xl">
+          <video
+            src={nosotrosVideo}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label="Interior de Roma Barber Club"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
       </div>
