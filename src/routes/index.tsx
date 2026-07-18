@@ -380,8 +380,10 @@ function Nosotros() {
 function Stat({ number, label }: { number: string; label: string }) {
   return (
     <div>
-      <div className="text-3xl font-bold tracking-tight text-primary">{number}</div>
-      <div className="text-sm text-muted-foreground">{label}</div>
+      <div className="inline-flex min-w-[3.5rem] items-center justify-center rounded-lg bg-ink px-3 py-1.5 text-3xl font-bold tracking-tight text-primary">
+        {number}
+      </div>
+      <div className="mt-1 text-sm text-muted-foreground">{label}</div>
     </div>
   );
 }
