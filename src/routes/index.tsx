@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Scissors,
   Sparkles,
@@ -15,6 +15,8 @@ import {
   X,
   MessageCircle,
   ArrowRight,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -326,6 +328,21 @@ function ValueProps() {
 
 function Nosotros() {
   const ref = useReveal<HTMLDivElement>();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+
+  function toggleMute() {
+    const v = videoRef.current;
+    if (!v) return;
+    const next = !muted;
+    v.muted = next;
+    if (!next) {
+      // Al activar sonido, aseguramos que siga reproduciendo.
+      void v.play().catch(() => {});
+    }
+    setMuted(next);
+  }
+
   return (
     <section id="nosotros" className="section-pad bg-white">
       <div ref={ref} className="reveal mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
@@ -346,17 +363,28 @@ function Nosotros() {
           </div>
         </div>
 
-        <div className="relative aspect-[1408/1200] overflow-hidden rounded-2xl">
-          <video
-            src={nosotrosVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            aria-label="Interior de Roma Barber Club"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+        <div className="flex justify-center lg:justify-end">
+          <div className="relative aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-2xl bg-ink sm:max-w-[340px]">
+            <video
+              ref={videoRef}
+              src={nosotrosVideo}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label="Interior de Roma Barber Club"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <button
+              type="button"
+              onClick={toggleMute}
+              aria-label={muted ? "Activar sonido" : "Silenciar"}
+              className="absolute bottom-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70"
+            >
+              {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -589,8 +617,15 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
-            <div className="wordmark text-base text-white">
-              Roma <span className="text-primary">Barber</span> Club
+            <div className="flex items-center gap-3">
+              <img
+                src={logoSvg}
+                alt="Roma Barber Club"
+                className="h-10 w-auto brightness-0 invert sm:h-12"
+              />
+              <div className="wordmark text-base text-white">
+                Roma <span className="text-primary">Barber</span> Club
+              </div>
             </div>
             <p className="mt-3 max-w-sm text-sm">
               Barbería moderna en Las Heras, Mendoza. Cortes, barba y cuidado para vos.
