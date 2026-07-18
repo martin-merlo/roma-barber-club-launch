@@ -330,17 +330,30 @@ function Nosotros() {
   const ref = useReveal<HTMLDivElement>();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  const [volume, setVolume] = useState(100); // 0–100
 
-  function toggleMute() {
+  // Mantiene el elemento <video> sincronizado con el estado.
+  useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+    v.muted = muted;
+    v.volume = volume / 100;
+  }, [muted, volume]);
+
+  function toggleMute() {
     const next = !muted;
-    v.muted = next;
-    if (!next) {
-      // Al activar sonido, aseguramos que siga reproduciendo.
-      void v.play().catch(() => {});
-    }
     setMuted(next);
+    if (!next) {
+      if (volume === 0) setVolume(50);
+      void videoRef.current?.play().catch(() => {});
+    }
+  }
+
+  function handleVolume(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = Number(e.target.value);
+    setVolume(val);
+    setMuted(val === 0);
+    if (val > 0) void videoRef.current?.play().catch(() => {});
   }
 
   return (
@@ -363,8 +376,8 @@ function Nosotros() {
           </div>
         </div>
 
-        <div className="flex justify-center">
-          <div className="relative aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-2xl bg-ink sm:max-w-[340px]">
+        <div className="flex justify-center lg:justify-start">
+          <div className="relative aspect-[9/16] w-full max-w-[300px] overflow-hidden rounded-2xl bg-ink sm:max-w-[340px] lg:-translate-x-12">
             <video
               ref={videoRef}
               src={nosotrosVideo}
@@ -376,14 +389,29 @@ function Nosotros() {
               aria-label="Interior de Roma Barber Club"
               className="absolute inset-0 h-full w-full object-cover"
             />
-            <button
-              type="button"
-              onClick={toggleMute}
-              aria-label={muted ? "Activar sonido" : "Silenciar"}
-              className="absolute bottom-3 right-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur transition-colors hover:bg-black/70"
-            >
-              {muted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-            </button>
+            <div className="group absolute bottom-3 right-3 flex items-center gap-1.5 rounded-full bg-black/50 px-2.5 py-2 text-white backdrop-blur transition-colors hover:bg-black/70 focus-within:bg-black/70">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={muted ? 0 : volume}
+                onChange={handleVolume}
+                aria-label="Volumen"
+                className="h-1 w-0 cursor-pointer opacity-0 accent-[#c9a24b] transition-all duration-200 group-hover:w-20 group-hover:opacity-100 group-focus-within:w-20 group-focus-within:opacity-100"
+              />
+              <button
+                type="button"
+                onClick={toggleMute}
+                aria-label={muted ? "Activar sonido" : "Silenciar"}
+                className="inline-flex h-6 w-6 shrink-0 items-center justify-center"
+              >
+                {muted || volume === 0 ? (
+                  <VolumeX className="h-5 w-5" />
+                ) : (
+                  <Volume2 className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -621,7 +649,7 @@ function Footer() {
               <img
                 src={logoSvg}
                 alt="Roma Barber Club"
-                className="h-10 w-auto brightness-0 invert sm:h-12"
+                className="h-10 w-auto sm:h-12"
               />
               <div className="wordmark text-base text-white">
                 Roma <span className="text-primary">Barber</span> Club
