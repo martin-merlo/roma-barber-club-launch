@@ -698,7 +698,7 @@ function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-6 text-xs text-white/50">
-          © {new Date().getFullYear()} Roma Barber Club. Todos los derechos reservados.
+          © {new Date().getFullYear()} Roma Barber Club. Diseñado por Martin Merlo.
         </div>
       </div>
     </footer>
