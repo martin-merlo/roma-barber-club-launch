@@ -186,7 +186,7 @@ function Header({
           <img
             src={logoSvg}
             alt="Roma Barber Club"
-            className="h-11 w-auto rounded-lg sm:h-14"
+            className="h-12 w-12 rounded-lg bg-black object-contain sm:h-14 sm:w-14"
           />
           <span className="wordmark text-sm sm:text-base">
             Roma <span className="text-primary">Barber</span> Club
@@ -255,12 +255,12 @@ function Hero({ onReservar }: { onReservar: () => void }) {
           alt="Barbero de Roma Barber Club haciendo un corte"
           width={960}
           height={1280}
-          className="h-full w-full object-cover object-center opacity-60"
+          className="h-full w-full object-contain object-right opacity-90"
         />
         {/* Oscurecido lateral (lado del texto) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/75 to-ink/25" />
-        {/* Viñeta vertical para fundir los bordes de la foto con el negro */}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-transparent to-ink/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-transparent" />
+        {/* Viñeta inferior para asentar la foto */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
       </div>
 
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
@@ -652,7 +652,7 @@ function Footer() {
               <img
                 src={logoSvg}
                 alt="Roma Barber Club"
-                className="h-10 w-auto rounded-lg sm:h-12"
+                className="h-12 w-12 rounded-lg bg-black object-contain sm:h-14 sm:w-14"
               />
               <div className="wordmark text-base text-white">
                 Roma <span className="text-primary">Barber</span> Club
