@@ -250,17 +250,26 @@ function Hero({ onReservar }: { onReservar: () => void }) {
   return (
     <section id="top" className="relative isolate overflow-hidden bg-ink text-white">
       <div className="absolute inset-0">
+        {/* Foto apaisada, llena todo el hero */}
         <img
           src={heroImg}
           alt="Barbero de Roma Barber Club haciendo un corte"
-          width={960}
-          height={1280}
-          className="h-full w-full object-contain object-right opacity-90"
+          width={1024}
+          height={572}
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-90"
         />
-        {/* Oscurecido lateral (lado del texto) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-transparent" />
-        {/* Viñeta inferior para asentar la foto */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/60 to-transparent" />
+        {/* Viñeta lateral marcada: tapa los bordes extendidos por IA */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(90deg, #0f0f0f 0%, rgba(15,15,15,0) 32%, rgba(15,15,15,0) 68%, #0f0f0f 100%)",
+          }}
+        />
+        {/* Oscurecido del lado del texto */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/25 to-transparent" />
+        {/* Viñeta superior e inferior para asentar la foto */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-ink/45" />
       </div>
 
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
