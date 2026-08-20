@@ -32,8 +32,8 @@ import {
   buildWhatsAppUrl,
 } from "@/lib/booking";
 
-import heroImg from "@/assets/hero-barber.jpg";
-import logoSvg from "@/assets/LogoSVG.svg";
+import heroImg from "@/assets/hero-nuevo.jpg";
+import logoSvg from "@/assets/logo-nuevo.jpg";
 import nosotrosVideo from "@/assets/video.mp4";
 import corte1 from "@/assets/Corte1.png";
 import corte2 from "@/assets/Corte2.png";
@@ -186,7 +186,7 @@ function Header({
           <img
             src={logoSvg}
             alt="Roma Barber Club"
-            className="h-11 w-auto sm:h-14"
+            className="h-11 w-auto rounded-lg sm:h-14"
           />
           <span className="wordmark text-sm sm:text-base">
             Roma <span className="text-primary">Barber</span> Club
@@ -253,11 +253,14 @@ function Hero({ onReservar }: { onReservar: () => void }) {
         <img
           src={heroImg}
           alt="Barbero de Roma Barber Club haciendo un corte"
-          width={1600}
-          height={1808}
-          className="h-full w-full object-cover object-center opacity-55"
+          width={960}
+          height={1280}
+          className="h-full w-full object-cover object-center opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/70 to-ink/20" />
+        {/* Oscurecido lateral (lado del texto) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/75 to-ink/25" />
+        {/* Viñeta vertical para fundir los bordes de la foto con el negro */}
+        <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-transparent to-ink/80" />
       </div>
 
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
@@ -649,7 +652,7 @@ function Footer() {
               <img
                 src={logoSvg}
                 alt="Roma Barber Club"
-                className="h-10 w-auto sm:h-12"
+                className="h-10 w-auto rounded-lg sm:h-12"
               />
               <div className="wordmark text-base text-white">
                 Roma <span className="text-primary">Barber</span> Club
