@@ -32,7 +32,7 @@ import {
   buildWhatsAppUrl,
 } from "@/lib/booking";
 
-import heroImg from "@/assets/hero-nuevo.jpg";
+import heroImg from "@/assets/hero-upscaled.jpg";
 import logoSvg from "@/assets/logo-nuevo.jpg";
 import nosotrosVideo from "@/assets/video.mp4";
 import corte1 from "@/assets/Corte1.png";
@@ -250,26 +250,32 @@ function Hero({ onReservar }: { onReservar: () => void }) {
   return (
     <section id="top" className="relative isolate overflow-hidden bg-ink text-white">
       <div className="absolute inset-0">
-        {/* Foto apaisada, llena todo el hero */}
+        {/* Foto apaisada; en desktop se desplaza a la derecha para tapar parte de la mesa */}
         <img
           src={heroImg}
           alt="Barbero de Roma Barber Club haciendo un corte"
-          width={1024}
-          height={572}
-          className="absolute inset-0 h-full w-full object-cover object-center opacity-90"
+          width={2200}
+          height={1229}
+          className="absolute inset-0 h-full w-full object-cover object-center opacity-90 lg:translate-x-[12%]"
         />
-        {/* Viñeta lateral marcada: tapa los bordes extendidos por IA */}
+        {/* Sector izquierdo negro sólido + viñeta marcada donde comienza la foto */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(90deg, #0f0f0f 0%, rgba(15,15,15,0) 32%, rgba(15,15,15,0) 68%, #0f0f0f 100%)",
+              "linear-gradient(90deg, #0f0f0f 0%, #0f0f0f 18%, rgba(15,15,15,0.55) 34%, rgba(15,15,15,0) 52%)",
           }}
         />
-        {/* Oscurecido del lado del texto */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/25 to-transparent" />
+        {/* Viñeta lateral derecha para fundir el borde */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(270deg, #0f0f0f 0%, rgba(15,15,15,0) 18%)",
+          }}
+        />
         {/* Viñeta superior e inferior para asentar la foto */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-ink/45" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-ink/40" />
       </div>
 
       <div className="relative mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-center px-4 py-24 sm:px-6 lg:px-8">
